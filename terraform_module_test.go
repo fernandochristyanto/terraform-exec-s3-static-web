@@ -42,11 +42,12 @@ func TestTerraformModule(t *testing.T) {
 		t.Error(err)
 	}
 
+	bucketName := fmt.Sprintf("bucket_name=%s", xid.New().String())
+
 	// Ensure terraform destroy even if error occurs
-	defer tf.Destroy(ctx)
+	defer tf.Destroy(ctx, tfexec.Var(bucketName))
 
 	// Terraform apply with variable
-	bucketName := fmt.Sprintf("bucket_name=%s", xid.New().String())
 	err = tf.Apply(ctx, tfexec.Var(bucketName))
 	if err != nil {
 		t.Error(err)
